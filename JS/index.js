@@ -86,8 +86,8 @@ class Details {
       this.ui.displayGameDetails(data);
 
       loader.classList.add("d-none");
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      alert(error);
     }
   }
 }
@@ -135,8 +135,8 @@ class Games {
       loader.classList.add("d-none");
 
       this.getGameDetail();
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      alert(error);
     }
   }
 

@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html>
+<!-- <!DOCTYPE html> -->
+<html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
-    <title>GAME REVIEWS</title>
-    <link rel="shortcut icon" href="img/logo-sm.png" type="image/x-icon" />
 
-    <!-- Font -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,125 +11,95 @@
       rel="stylesheet"
     />
 
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="CSS/all.css" />
-    <link rel="stylesheet" type="text/css" href="CSS/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="CSS/style.css" />
+    <!-- Css files -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Reviews</title>
   </head>
   <body>
-    <div
-      id="game-details-container"
-      class="game-details-container position-fixed top-0 bottom-0 start-0 end-0 z-3 text-center m-0 rounded-0 d-none"
-    >
-      <!-- <div class="games-details position-relative row">
-        <p
-          role="button"
-          class="text-white-50 position-absolute d-block"
-          id="close"
-        >
-          <i class="fa-solid fa-x"></i>
-        </p>
-        <div class="col-5 d-flex flex-column align-items-center mt-4">
-          <p class="text-white">Details Game</p>
-          <img class="w-50" src="${fetchID.thumbnail}" />
-        </div>
-        <div class="games-details-footer col-7 mt-5 position-relative">
-          <p class="text-white">Title: ${fetchID.title}</p>
-          <p class="text-white">Category: ${fetchID.genre}</p>
-          <p class="text-white">Platform: ${fetchID.platform}</p>
-          <p class="text-white">Status: ${fetchID.status}</p>
-
-          <p class="text-white">${fetchID.description}></p>
-
-          <a
-            role="button"
-            class="btn btn-outline-warning"
-            href="${fetchID.game_url}"
-            >Show Game</a
+    <!-- Games Section -->
+    <section class="games">
+      <header>
+        <img src="img/wraper.png" alt="wrapper" class="w-100" />
+      </header>
+      <nav class="navbar navbar-expand-lg position-sticky z-3 top-0 mx-auto">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="img/logo-sm.png" alt="logo image" class="w-25" />
+            <span class="fs-5 text-uppercase text-white">game reviews</span>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
-        </div>
-      </div> -->
-    </div>
-
-    <div class="header"></div>
-    <nav
-      id="navbar-scroll"
-      class="navbar navbar-expand-lg justify-content-center position-relative p-0 pe-3 mb-3 container rounded-4 w-75 position-sticky top-0 z-1"
-    >
-      <div class="container-fluid">
-        <a
-          class="navbar-brand d-flex justify-content-center align-items-center"
-          href="#"
-          ><img class="pe-2 w-25" src="img/logo-sm.png" alt="logo" />GAME
-          REVIEWS</a
-        >
-
-        <button
-          class="navbar-toggler position-absolute end-0 me-5 mt-4 translate-middle-y"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div>
+            <span class="navbar-toggler-icon"></span>
+          </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-5 pe-5 mb-2 me-lg-0 pe-lg-0 mb-lg-0">
+            <ul class="navbar-nav ms-auto text-white">
               <li class="nav-item">
                 <a
                   class="nav-link active"
                   aria-current="page"
-                  id="mmorpg"
                   href="#"
+                  data-category="MMORPG"
                   >MMORPG</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="shooter" href="#">SHOOTER</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" id="sailing" href="#">SAILING</a>
+                <a class="nav-link" href="#" data-category="Shooter">Shooter</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="perma-death" href="#">PERMADEATH</a>
+                <a class="nav-link" href="#" data-category="Sailing">Sailing</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="super-hero" href="#">SUPERHERO</a>
+                <a class="nav-link" href="#" data-category="Permadeath"
+                  >Permadeath</a
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="pixel" href="#"> PIXEL</a>
+                <a class="nav-link" href="#" data-category="Superhero"
+                  >Superhero</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-category="Pixel">Pixel</a>
               </li>
             </ul>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
 
-    <main data-bs-spy="scroll" data-bs-target="#navbar-scroll">
-      <div class="container text-center">
-        <div id="games-data" class="row g-3">
-          <div
-            class="col-12 d-flex justify-content-center align-items-center mt-5 pt-5"
-          >
-            <div class="sk-chase">
-              <div class="sk-chase-dot"></div>
-              <div class="sk-chase-dot"></div>
-              <div class="sk-chase-dot"></div>
-              <div class="sk-chase-dot"></div>
-              <div class="sk-chase-dot"></div>
-              <div class="sk-chase-dot"></div>
-            </div>
-          </div>
+      <main class="py-5">
+        <div class="container">
+          <div class="row g-3" id="gamesData"></div>
         </div>
-      </div>
-    </main>
+      </main>
+    </section>
 
-    <!-- JS -->
-    <script src="JS/bootstrap.bundle.min.js"></script>
-    <script src="JS/index.js"></script>
+    <!-- Single Game's details  -->
+    <section class="game-detail d-none">
+      <div class="container text-white">
+        <header class="d-flex justify-content-between align-items-center">
+          <h1 class="h3 py-4">Game Details</h1>
+          <button class="btn-close btn-close-white"></button>
+        </header>
+
+        <div class="row g-4 game-data"></div>
+      </div>
+    </section>
+
+    <!-- Loader -->
+    <div class="loading">
+      <span class="loader"></span>
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/index.js"></script>
   </body>
 </html>

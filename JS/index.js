@@ -1,199 +1,155 @@
-"use strict";
+class Ui {
+  displayGames(games) {
+    let gamesContent = "";
 
-class GameFetcher {
+    for (let i = 0; i < games.length; i++) {
+      gamesContent += `
+        <div class="col-lg-4 col-md-6 col-xl-3">
+          <div class="card h-100 bg-transparent" data-id="${games[i].id}">
+            <div class="px-3 pt-3">
+              <img src="${
+                games[i].thumbnail
+              }" class="card-img-top" alt="game thumbnail">
+            </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h3 class="m-0 text-white">${games[i].title}</h3>
+                  <span class="p-2 text-bg-primary">Free</span>
+                </div>
+                <p class="card-text text-center text-white opacity-50">
+                ${games[i].short_description
+                  .split(" ")
+                  .slice(0, 8)
+                  .join(" ")}...
+                </p>
+              </div>
+              <div class="card-footer d-flex justify-content-between">
+                <span>${games[i].genre}</span>
+                <span>${games[i].platform}</span>
+              </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("gamesData").innerHTML = gamesContent;
+    }
+  }
+
+  displayGameDetails(data) {
+    let gameDetail = `
+      <div class="col-md-4">
+        <img src="${data.thumbnail}" alt="game thumbnail" class="w-100">
+      </div>
+      <div class="col-md-8">
+        <h3>Title: ${data.title}</h3>
+        <p>Category: <span class="text-bg-info">${data.genre}</span></p>
+        <p>Platform: <span class="text-bg-info">${data.platform}</span></p>
+        <p>Status: <span class="text-bg-info">${data.status}</span></p>
+        <p class="small">${data.description}</p>
+        <a href="${data.game_url}" target="_blank" class="btn btn-outline-warning mb-3">Show Game</a>
+      </div>
+    `;
+    document.querySelector(".game-data").innerHTML = gameDetail;
+  }
+}
+
+class Details {
   constructor() {
-    this.games = [];
-    this.gamesData = document.getElementById("games-data");
-    this.mmorpg = document.getElementById("mmorpg");
-    this.shooter = document.getElementById("shooter");
-    this.sailing = document.getElementById("sailing");
-    this.permaDeath = document.getElementById("perma-death");
-    this.superHero = document.getElementById("super-hero");
-    this.pixel = document.getElementById("pixel");
+    this.ui = new Ui();
 
-    this.mmorpg.addEventListener("click", () => {
-      this.fetchGames("mmorpg");
-      this.mmorpg.classList.add("active");
-      this.shooter.classList.remove("active");
-      this.sailing.classList.remove("active");
-      this.permaDeath.classList.remove("active");
-      this.superHero.classList.remove("active");
-      this.pixel.classList.remove("active");
+    document.querySelector(".btn-close").addEventListener("click", () => {
+      document.querySelector(".games").classList.remove("d-none");
+      document.querySelector(".game-detail").classList.add("d-none");
     });
-    this.shooter.addEventListener("click", () => {
-      this.fetchGames("shooter");
-      this.mmorpg.classList.remove("active");
-      this.shooter.classList.add("active");
-      this.sailing.classList.remove("active");
-      this.permaDeath.classList.remove("active");
-      this.superHero.classList.remove("active");
-      this.pixel.classList.remove("active");
-    });
-
-    this.sailing.addEventListener("click", () => {
-      this.fetchGames("sailing");
-      this.mmorpg.classList.remove("active");
-      this.shooter.classList.remove("active");
-      this.sailing.classList.add("active");
-      this.permaDeath.classList.remove("active");
-      this.superHero.classList.remove("active");
-      this.pixel.classList.remove("active");
-    });
-
-    this.permaDeath.addEventListener("click", () => {
-      this.fetchGames("permadeath");
-      this.mmorpg.classList.remove("active");
-      this.shooter.classList.remove("active");
-      this.sailing.classList.remove("active");
-      this.permaDeath.classList.add("active");
-      this.superHero.classList.remove("active");
-      this.pixel.classList.remove("active");
-    });
-
-    this.superHero.addEventListener("click", () => {
-      this.fetchGames("superhero");
-      this.mmorpg.classList.remove("active");
-      this.shooter.classList.remove("active");
-      this.sailing.classList.remove("active");
-      this.permaDeath.classList.remove("active");
-      this.superHero.classList.add("active");
-      this.pixel.classList.remove("active");
-    });
-
-    this.pixel.addEventListener("click", () => {
-      this.fetchGames("pixel");
-      this.mmorpg.classList.remove("active");
-      this.shooter.classList.remove("active");
-      this.sailing.classList.remove("active");
-      this.permaDeath.classList.remove("active");
-      this.superHero.classList.remove("active");
-      this.pixel.classList.add("active");
-    });
-
-    this.fetchGames("mmorpg");
   }
 
-  async fetchGames(genre) {
-    const options = {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "017dcae89fmsh665dd24863a169ap1ab1c0jsn3c4b915af181",
-        "x-rapidapi-host": "free-to-play-games-database.p.rapidapi.com",
-      },
-    };
+  async getDetails(gemeId) {
+    const loader = document.querySelector(".loading");
+    loader.classList.remove("d-none");
 
-    const http = await fetch(
-      `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${genre}`,
-      options
-    );
-    const response = await http.json();
+    try {
+      const options = {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "017dcae89fmsh665dd24863a169ap1ab1c0jsn3c4b915af181",
+          "x-rapidapi-host": "free-to-play-games-database.p.rapidapi.com",
+        },
+      };
 
-    this.games = response;
-    this.displayGames();
-  }
+      const res = await fetch(
+        `https://free-to-play-games-database.p.rapidapi.com/api/game?id=${gemeId}`,
+        options
+      );
+      const data = await res.json();
 
-  displayGames() {
-    let Cartona = "";
-    for (let i = 0; i < this.games.length; i++) {
-      // console.log(this.games[i]);
-      this.games[i].short_description =
-        this.games[i].short_description.substring(0, 50) + "...";
-      Cartona += `<div class="games-container col-md-3 col-12 mb-3">
-                                
-                                <div class="games">
-                                    <div class="d-flex flex-column align-items-center">
-                                        <img src="${this.games[i].thumbnail}">
-                                        <p class="text-white pt-1">${this.games[i].title}</p>
-                                        <p class="text-white opacity-50">${this.games[i].short_description}</p>         
-                                    </div>
-                                    <div class="border-top"></div>
-                                    <div class="games-footer">
-                                    <p class="text-white d-flex justify-content-between"
-                                    ><span>${this.games[i].genre}</span><span>${this.games[i].platform}</span>
-                                    </p>
-                                    </div>
-                                </div>
-                                </div>`;
+      this.ui.displayGameDetails(data);
+
+      loader.classList.add("d-none");
+    } catch (err) {
+      alert(err);
     }
-
-    this.gamesData.innerHTML = Cartona;
   }
 }
 
-new GameFetcher();
+class Games {
+  constructor() {
+    this.getGames("MMORPG");
 
-class GameId extends GameFetcher {
-  constructor(id) {
-    super();
-    this.GameContainer = document.getElementById("game-details-container");
-    this.close = document.getElementById("close"); // Define gameDetails variable
-    this.close.addEventListener("click", () => {
-      this.GameContainer.classList.add("d-none");
-    });
-  }
+    this.details = new Details();
 
-  async fetchGameId(id) {
-    const options = {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "017dcae89fmsh665dd24863a169ap1ab1c0jsn3c4b915af181",
-        "x-rapidapi-host": "free-to-play-games-database.p.rapidapi.com",
-      },
-    };
+    this.ui = new Ui();
 
-    let http1 = await fetch(
-      `https://free-to-play-games-database.p.rapidapi.com/api/game?id=${id}`,
-      options
-    );
-    let fetchID = await http1.json();
-    //  console.log(fetchID);
-
-    this.games;
-    this.fetchID = fetchID;
-    let gameCartona = "";
-    for (let i = 0; i < this.games.length; i++) {
-      let gameDetails = document.getElementsByClassName("games-container");
-      gameDetails[i].addEventListener("click", () => {
-        let id = this.games[i].id;
-        this.fetchGameId(id);
-        console.log(id);
-
-        console.log(this.fetchID);
-
-        //   this.GameContainer.classList.remove("d-none");
-        //   gameCartona += `<div class="games-details position-relative row">
-        //   <p
-        //     role="button"
-        //     class="text-white-50 position-absolute d-block"
-        //     id="close"
-        //   >
-        //     <i class="fa-solid fa-x"></i>
-        //   </p>
-        //   <div class="col-5 d-flex flex-column align-items-center mt-4">
-        //     <p class="text-white">Details Game</p>
-        //     <img class="w-50" src="${fetchID.thumbnail}" />
-        //   </div>
-        //   <div class="games-details-footer col-7 mt-5 position-relative">
-        //     <p class="text-white">Title: ${fetchID.title}</p>
-        //     <p class="text-white">Category: ${fetchID.genre}</p>
-        //     <p class="text-white">Platform: ${fetchID.platform}</p>
-        //     <p class="text-white">Status: ${fetchID.status}</p>
-
-        //     <p class="text-white">${fetchID.description}></p>
-
-        //     <a
-        //       role="button"
-        //       class="btn btn-outline-warning"
-        //       href="${fetchID.game_url}"
-        //       >Show Game</a
-        //     >
-        //   </div>
-        // </div>`;
+    this.links = document.querySelectorAll(".nav-link");
+    for (const link of this.links) {
+      link.addEventListener("click", (e) => {
+        document.querySelector(".active").classList.remove("active");
+        e.target.classList.add("active");
+        this.getGames(e.target.dataset.category);
       });
-      // this.GameContainer.innerHTML = gameCartona;
-      // console.log(this.gameCartona);
+    }
+  }
+
+  async getGames(category) {
+    const loader = document.querySelector(".loading");
+    loader.classList.remove("d-none");
+
+    try {
+      const options = {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key":
+            "017dcae89fmsh665dd24863a169ap1ab1c0jsn3c4b915af181",
+          "x-rapidapi-host": "free-to-play-games-database.p.rapidapi.com",
+        },
+      };
+
+      const res = await fetch(
+        `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${category}`,
+        options
+      );
+      const data = await res.json();
+
+      this.ui.displayGames(data);
+
+      loader.classList.add("d-none");
+
+      this.getGameDetail();
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  getGameDetail() {
+    let cards = document.querySelectorAll(".card");
+    for (const card of cards) {
+      card.addEventListener("click", () => {
+        document.querySelector(".games").classList.add("d-none");
+        document.querySelector(".game-detail").classList.remove("d-none");
+        this.details.getDetails(card.dataset.id);
+      });
     }
   }
 }
 
-new GameId().fetchGameId();
+new Games();
